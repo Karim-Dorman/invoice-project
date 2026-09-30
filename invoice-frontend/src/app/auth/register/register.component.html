@@ -1,0 +1,68 @@
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h4 class="text-center mb-4">Register</h4>
+
+          <form [formGroup]="registerForm">
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Enter email"
+                formControlName="email"
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Create password"
+                formControlName="password"
+              />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Confirm password"
+                formControlName="password2"
+              />
+            </div>
+
+            <!-- Button -->
+            <button type="submit" class="btn btn-primary w-100" (click)="onSubmit()">
+              Register
+            </button>
+
+            @if (errorMessage) {
+              <div class="mt-3 text-center">
+                <small class="text-danger fw-semibold">
+                  {{ errorMessage }}
+                </small>
+              </div>
+            }
+
+            <!-- Login link -->
+            <div class="text-center mt-3">
+              <small>
+                Already have an account?
+                <a routerLink="/login">Login</a>
+              </small>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

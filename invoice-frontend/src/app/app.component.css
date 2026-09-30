@@ -1,0 +1,16 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* This grows to fill remaining space and pushes footer down */
+.app-main {
+  flex: 1;
+  padding: 24px 0;
+}

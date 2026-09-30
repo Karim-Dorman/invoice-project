@@ -1,0 +1,120 @@
+<div class="container py-4" style="max-width: 900px;">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h1 class="mb-0">Profile</h1>
+      <small class="text-muted">Manage your profile details used for invoices.</small>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
+
+        <!-- Personal Info -->
+        <div class="mb-3">
+          <h5 class="mb-1">Personal Information</h5>
+          <hr class="mt-2" />
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name" />
+            <small class="text-danger" *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+              Name is required
+            </small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email" />
+            <small class="text-danger" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+              Email is required
+            </small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phone" formControlName="phoneNumber" />
+            <small class="text-danger" *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched">
+              Phone number is required
+            </small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="rate" class="form-label">Hourly Rate</label>
+            <input type="text" class="form-control" id="rate" formControlName="rate" placeholder="e.g. 51" />
+            <small class="text-danger" *ngIf="profileForm.get('rate')?.invalid && profileForm.get('rate')?.touched">
+              Please provide hourly rate
+            </small>
+          </div>
+        </div>
+
+        <!-- Company Info -->
+        <div class="mt-4 mb-3">
+          <h5 class="mb-1">Company Information</h5>
+          <hr class="mt-2" />
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="companyName" class="form-label">Company Name</label>
+            <input type="text" class="form-control" id="companyName" formControlName="companyName" />
+            <small class="text-danger" *ngIf="profileForm.get('companyName')?.invalid && profileForm.get('companyName')?.touched">
+              Company name is required
+            </small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="companyAddress" class="form-label">Company Address</label>
+            <input type="text" class="form-control" id="companyAddress" formControlName="companyAddress" />
+            <small class="text-danger" *ngIf="profileForm.get('companyAddress')?.invalid && profileForm.get('companyAddress')?.touched">
+              Company address is required
+            </small>
+          </div>
+        </div>
+
+        <!-- Default Client Info -->
+        <div class="mt-4 mb-3">
+          <h5 class="mb-1">Default Client Information</h5>
+          <small class="text-muted">This will pre-fill when creating new invoices.</small>
+          <hr class="mt-2" />
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="clientName" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="clientName" formControlName="clientName" />
+            <small class="text-danger" *ngIf="profileForm.get('clientName')?.invalid && profileForm.get('clientName')?.touched">
+              Please provide client name
+            </small>
+          </div>
+
+          <div class="col-md-6">
+            <label for="clientEmail" class="form-label">Client Email</label>
+            <input type="email" class="form-control" id="clientEmail" formControlName="clientEmail" />
+            <small class="text-danger" *ngIf="profileForm.get('clientEmail')?.invalid && profileForm.get('clientEmail')?.touched">
+              Please provide client email
+            </small>
+          </div>
+
+          <div class="col-12">
+            <label for="clientAddress" class="form-label">Client Address</label>
+            <input type="text" class="form-control" id="clientAddress" formControlName="clientAddress" />
+            <small class="text-danger" *ngIf="profileForm.get('clientAddress')?.invalid && profileForm.get('clientAddress')?.touched">
+              Please provide client address
+            </small>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-2 justify-content-end mt-4">
+          <button type="submit" class="btn btn-warning" [disabled]="profileForm.invalid">
+            Save Profile
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

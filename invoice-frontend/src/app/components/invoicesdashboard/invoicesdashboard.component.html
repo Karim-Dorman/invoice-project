@@ -1,0 +1,209 @@
+<div class="container my-4">
+  <!-- Page title + quick actions -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    
+    <div>
+      <h2 class="mb-0">Invoice Dashboard</h2>
+      <small class="text-muted">Create new invoices and view your invoice history</small>
+    </div>
+    
+    <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="/profile">
+      Edit Profile
+    </button>
+  </div>
+
+  <div class="row">
+    <!-- New Invoice Form -->
+    <div class="col-lg-8 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <strong>Create New Invoice</strong>
+        </div>
+        <div class="card-body">
+          
+          <form [formGroup]="invoiceForm">
+
+            <!-- Invoice Period -->
+            <div class="mb-3">
+              <label for="period" class="form-label">Period Covered</label>
+              <input
+                type="month"
+                class="form-control"
+                id="period"
+                placeholder="Select month"
+                formControlName="periodCovered"
+              />
+              <div class="form-text">
+                Example: 2025-11 for November 2025
+              </div>
+            </div>
+
+            <!-- Hours Worked -->
+            <div class="mb-3">
+              <label for="hoursWorked" class="form-label">Hours Worked</label>
+              <input
+                type="number"
+                class="form-control"
+                id="hoursWorked"
+                min="0"
+                step="0.25"
+                placeholder="Enter total hours"
+                formControlName="hoursWorked"
+              />
+            </div>
+
+            <!-- Optional: Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                rows="2"
+                placeholder="e.g. Pfizer eQMS Technical Development"
+                formControlName="description"
+              ></textarea>
+            </div>
+
+            <!-- Calculated summary row -->
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Hourly Rate</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="rate"
+                  min="0"
+                  step="0.01"
+                  placeholder="{{ employee?.rate | currency:'USD' }}"
+                  readonly
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Estimated Amount</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="estimatedAmount"
+                  readonly
+                  [value]="amount | currency:'USD'"
+                />
+              </div>
+              <div class="col-md-4 d-flex align-items-end justify-content-end">
+                <button type="submit" class="btn btn-primary w-100" (click)="onSubmit()" [disabled]="invoiceForm.invalid">
+                  {{ isEditMode ? 'Save Changes &amp; Send Invoice' : 'Generate &amp; Send Invoice'}}
+                </button> 
+              </div>
+            </div>
+
+            <!-- Status / message placeholder -->
+            <div class="mt-2">
+              <!-- Later you can show success / error alerts here -->
+              <!-- Example:
+              <div class="alert alert-success py-2 mb-0">
+                Invoice PFZ-015 has been created and sent successfully.
+              </div>
+              -->
+              @if (isInvoiceProcessing) {
+                <div class="mt-3 text-center">
+                  <small class="text-muted">Please wait while we process your invoice…</small>
+                </div>
+              }
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side summary / profile card -->
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <strong>Profile Summary</strong>
+        </div>
+        <div class="card-body">
+          <!-- Replace these placeholders with real data later -->
+          <h6 class="mb-1">Your Company</h6>
+          <p class="mb-2">
+            {{ employee?.companyName }}<br />
+            <small class="text-muted">Software / Web Development Services</small>
+          </p>
+
+          <h6 class="mb-1">Client</h6>
+          <p class="mb-2">
+            {{ employee?.clientName }}<br />
+            <small class="text-muted">Primary billing contact: {{ employee?.clientEmail }}</small>
+          </p>
+
+          <h6 class="mb-1">Billing Settings</h6>
+          <p class="mb-0">
+            Hourly Rate: <strong>{{ employee?.rate | currency:'USD' }}
+
+            </strong><br />
+            Invoice Prefix: <strong>INV-</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoice history table -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <strong>Invoice History</strong>
+      <small class="text-muted">Last 12 invoices</small>
+    </div>
+    @if(errorMessage){
+      <div class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    }
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-striped mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Invoice #</th>
+              <th scope="col">Period</th>
+              <th scope="col">Client</th>
+              <th scope="col" class="text-end">Hours</th>
+              <th scope="col" class="text-end">Amount</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Later you’ll *ngFor over your invoices here -->
+            @for (invoice of invoices; track invoice.id) {
+              <tr>
+                <td>{{invoice.invoiceNumber}}</td>                
+                <td>{{invoice.periodCovered}}</td> 
+                <td>{{invoice.employee?.clientName}}</td>   
+                <td class="text-end">{{invoice.hoursWorked}}</td>  
+                <td class="text-end">{{invoice.amount | currency}}</td>  
+                <td>
+                  <span class="badge bg-success">Sent</span>
+                </td>     
+                <td class="text-end">
+                  <button (click)="onEdit(invoice)" class="btn btn-sm btn-outline-primary">
+                    Update
+                  </button>
+                                 
+                </td>    
+              </tr>
+            }
+
+            <!-- When no invoices yet -->
+            <!-- -->
+            <tr *ngIf="invoices.length === 0">
+              <td colspan="7" class="text-center py-4">
+                No invoices yet. Create your first one above.
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
